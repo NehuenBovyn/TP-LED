@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPE</title>
+    <link rel="icon" href="C:\Users\nehue\Desktop\Facultad\2do año\6- Practica profesionales 1\TP LED 2021\pngwing.png.png">
+    <link rel="stylesheet" href="css1.css">
+</head>
+<body>
+<div class="container">
+    <div class="formluz">
+        <h1 class="luz">Calcular su impuesto de electricidad</h1>
+        <form name="formulluz">
+            <label>¿Que tipo de usuario es?</label>
+            <input type="radio" name="user" value="resi" class="userSelect">residencial
+            <input type="radio" name="user" value="indu" class="userSelect"> Industrial
+            <br><br>
+            <label for="zonas">Seleccione a que zona pertenece</label>
+            <select id="zonas" class="zonas">
+                <option value="">Seleccionar</option>
+                <option id="dNorte" value="dNorte">zona Norte</option>
+                <option id="dNoroeste" value="dNoroeste">zona Noroeste</option>
+                <option id="dCentro" value="dCentro">zona Centro</option>
+                <option id="dOeste" value="dOeste">zona Oeste</option>
+                <option id="dSudoeste" value="dSudoeste">zona Sudoeste</option>
+                <option id="dSur" value="dSur">zona Sur</option>
+            </select>
+            <br><br>
+            <label for="kwm">Ingrese la cantidad de kilowatt-hora (kWh) totales del mes actual</label>
+            <input type="number" min="0" name="kwm" id="kwm" placeholder="0000" class="cantKWM">
+            <br><br>
+            <button type="button" onclick="calculador()" class="buttonluz" >Calcular</button> 
+        </form>
+        <p id="importe" class="importe"></p>
+    </div>
+    <br>
+    <div class="formgas">
+        <h1>Calcular su impuesto de gas</h1>
+        <form name="formulgas">
+            <label>Selecciona la categoria a la que pertenece segun su consumo anual de m3</label>
+            <select class="categorias">
+                <option value="">Seleccionar</option>
+                <option value="runo">R1 (desde 0 a 500,99)</option>
+                <option value="rdosuno">R2-1 (desde 501 a 650,99)</option>
+                <option value="rdosdos">R2-2 (desde 651 a 800,99)</option>
+                <option value="rdostres">R2-3 (desde 801 a 1000,00)</option>
+                <option value="rtresuno">R3-1 (desde 1001 a 1250,99)</option>
+                <option value="rtresdos">R3-2 (desde 1251 a 1500,99)</option>
+                <option value="rtrestres">R3-3 (desde 1501 a 1800,99)</option>
+                <option value="rtrescuatro">R3-4 (desde 1801 a ----)</option>
+            </select>
+            <br><br>
+            <label>Ingrese la cantidad de volumen bimestral(m3)</label>
+            <input type="number" min="0" name="gas" id="gas" placeholder="0000" class="volumenm3">
+            <br><br>
+            <button type="button" onclick="calculadorgas()" class="buttongas">Calcular</button>
+        </form>
+        <p id="importegas" class="importegas"></p> 
+    </div>
+    <br><br>
+    <div class="botonrest">
+        <input class="restard" type="button" value="Recargar" onclick="location.reload()"/>
+    </div>
+</div>
+<script>
+    //"Escucha" lo que seleccionamos e ingresamos en el html (tipo de us, zona y cantKWM)
+const zonaElement = document.querySelector(".zonas");
+zonaElement.addEventListener("change", (event) => {
+    zona = event.target.value;
+});
+const userElement  = document.getElementsByClassName("userSelect");
+for (elem of userElement){
+    elem.addEventListener("change",(event) =>{
+        user = event.target.value;
+    })
+};
+const kwmElement  = document.querySelector(".cantKWM");
+kwmElement.addEventListener("change", (event) => {
+    kwh = event.target.value;
+}); 
+//Calculador de electricidad
+var user
+var kwh
+var zona 
+var importe 
+var calculador = function () {
+    if (user == "resi") {
+        switch (zona) {
+            case "dNorte":
+                importe= kwh*6;
+                break;
+            case "dNoroeste":
+                importe=kwh*5;
+                break;
+            case "dCentro":
+                importe = kwh*4;
+                break;
+            case "dOeste":
+                importe = kwh*3;
+                break;
+            case "dSudoeste":
+                importe = kwh*2
+                break;
+            case "dSur":
+                importe = kwh*1.5
+                break;
+            default:
+                alert("No selecciono ninguna zona, vuelva a intentar");
+                importe = 0;
+            break;
+        };
+    } else {
+        if (user== "indu") {
+            switch (zona) {
+            case "dNorte":
+                importe= kwh*5;
+                break;
+            case "dNoroeste":
+                importe=kwh*4;
+                break;
+            case "dCentro":
+                importe = kwh*3;
+                break;
+            case "dOeste":
+                importe = kwh*2;
+                break;
+            case "dSudoeste":
+                importe = kwh*1.5;
+                break;
+            case "dSur":
+                importe = kwh*0.5;
+                break;
+            default:
+                alert("No selecciono ninguna zona, vuelva a intentar");
+                importe = 0;
+            break;
+        };
+        } else {
+            alert("Usted no a seleccionado ningun tipo de usuario");
+            importe = 0
+        };
+    };
+    document.getElementById("importe").innerHTML = "Su importe es: "+importe+" pesos";
+};
+//"Escucha" los elementos que selecionamos e ingresamos en html (categoria, volm3)
+const volm3Element  = document.querySelector(".volumenm3");
+volm3Element.addEventListener("change", (event) => {
+    volm3 = event.target.value;
+}); 
+const categoryElement = document.querySelector(".categorias");
+categoryElement.addEventListener("change", (event) => {
+    categorias = event.target.value;
+});
+//Calcula impuesto a gas
+var volm3
+var categorias
+var importgas
+var calculadorgas = function () {
+    
+    switch (categorias) {
+        case "runo":
+            importgas=volm3*1.5
+            break;
+        case "rdosuno":
+            importgas=volm3*2
+            break;
+        case "rdosdos":
+            importgas=volm3*2.5
+            break;
+        case "rdostres":
+            importgas=volm3*3
+            break;
+        case "rtresuno":
+            importgas=volm3*3.5
+            break;
+        case "rtresdos":
+            importgas=volm3*4
+            break;
+        case "rtrestres":
+            importgas=volm3*4.5
+            break;
+        case "rtrescuatro":
+            importgas=volm3*5
+            break;
+        default:
+            alert("no a seleccionado ninguna opcion de categoria");
+            importgas = 0
+            break;
+    };
+    document.getElementById("importegas").innerHTML = "Su importe es: "+importgas+" pesos";
+};
+</script>
+</body>
+</html>
